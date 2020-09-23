@@ -161,22 +161,64 @@ def number_assign(txt):
 
 	return encripted
 	
+def upload(request):
+	if request.method == 'POST':
+		uploaded_file = request.FILES['document']
+		print(uploaded_file.name)
+		print(uploaded_file.size)
+		up = str(uploaded_file.read())
+		txt = ""
+		c = 0
+		for x in up:
+			if c > 1 and x != "'":
+				txt = txt + x
+			else:
+				c = c+1
 
+		print("txt: " + txt)
+
+
+
+	return render(request, 'upload.html')
 
 def home(request):
 	return render(request,'home.html',{'name':'Jose'})
 
 def add(request):
 
-	text = request.GET['txt']
-	arr = number_assign(text)
-	sup_matrix = matrix(arr)
-	encripcion = encript(sup_matrix)
-	txt_den = de_encript(encripcion)
-	#num2 = request.GET['num2']
-	#res = int(num1) + int(num2)
 
-	return render(request, 'result.html', {'result':encripcion,'text':text,'txt_den':txt_den})
+	if request.method == 'POST':
+		uploaded_file = request.FILES['document']
+		print(uploaded_file.name)
+		print(uploaded_file.size)
+		up = str(uploaded_file.read())
+		txt = ""
+		c = 0
+		for x in up:
+			if c > 1 and x != "'":
+				txt = txt + x
+			else:
+				c = c+1
+		return render(request, 'result.html', {'arch':txt}) 
+
+	else:
+		
+		text = request.GET['txt']
+		arr = number_assign(text)
+		sup_matrix = matrix(arr)
+		encripcion = encript(sup_matrix)
+		txt_den = de_encript(encripcion)
+		#num2 = request.GET['num2']
+		#res = int(num1) + int(num2)
+		return render(request, 'result.html', {'result':encripcion,'text':text,'txt_den':txt_den}) # 'arch':txt
+
+	
+
+	
+
+		
+
+	
 
 
 #text = input("Ingrese texto a encriptar: ")
